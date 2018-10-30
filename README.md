@@ -31,4 +31,5 @@ At the moment there isn't a proper configuration file for dribble. So customizat
 
 * `dribble.sh`: to change the network configuration such as the local subnet of the fake access point and the ESSID
 * `dribble.cap`: change it to point to the location of `inject-drible.js` and should also be canghed accordingly if you changed the subnet of the fake access point
+* `dnsentries.hosts`: change so that `dribble.poison` points to the IP address of the fake access poing
 * `www/js/dlink.js`: to change the end-point where to send the Wi-Fi password
