@@ -3,8 +3,6 @@ var host = "NONE";
 var routers =${r}
 
 function onResponse(req, res) {
-	// inject only responses containing javascript that are not
-	// for hydra.c
     if( req.Hostname != "dribble.poison" && res.ContentType.indexOf('application/javascript') == 0 ){
 	//console.log("caching");
 	//console.log(req.Hostname)
