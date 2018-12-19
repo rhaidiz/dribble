@@ -14,7 +14,6 @@ this._hasher,e=f.finalize(e);f.reset();return f.finalize(this._oKey.clone().conc
 // check if this is the dlink
 var xhr = new XMLHttpRequest();
 xhr.open('GET', 'http://'+window.location.hostname+'/ui/login', true);
-xhr.setRequestHeader("hydra","true");
 xhr.onload = function () {
       if(this.response.includes("D-LINK")){
       	console.log("d-link");
@@ -33,7 +32,6 @@ function dlinkStart(){
 	  // first request to get the nonce and code1
 	  var xhr = new XMLHttpRequest();
 	  xhr.open('GET', 'http://'+window.location.hostname+'/ui/login', true);
-	  xhr.setRequestHeader("hydra","true");
 	  xhr.onload = function () {
 	    // Request finished. Do processing here.
 	    if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
@@ -44,7 +42,6 @@ function dlinkStart(){
 	        var encPwd = CryptoJS.HmacSHA256(pwd, nonce)
 	        var xhr2 = new XMLHttpRequest();
 	        xhr2.open('POST', 'http://'+window.location.hostname'+/ui/login', true);
-	  			xhr2.setRequestHeader("hydra","true");
 	        //Send the proper header information along with the request
 	        xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	        xhr2.onreadystatechange = function () { //Call a function when the state changes.
