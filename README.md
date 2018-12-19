@@ -12,10 +12,10 @@ For a more in-depth walkthrough see here: https://rhaidiz.net/2018/10/25/dribble
 
 Dribble relays on the following software to work, so make sure you have them installed and available in your PATH:
 
-* hostapd
-* dnsmasq
-* node.js
-* bettercap
+* [hostapd](https://github.com/wertarbyte/hostap/tree/master/hostapd)
+* [dnsmasq](http://www.thekelleys.org.uk/dnsmasq/doc.html)
+* [node.js](https://nodejs.org/en/download/package-manager/)
+* [bettercap](https://github.com/bettercap/bettercap)
 
 ### Download and run
 
