@@ -1,0 +1,21 @@
+
+# the internet interface
+internet=eth0
+
+# the wifi interface
+phy=wlan0
+
+# The ESSID
+essid="TEST"
+
+# collector
+collector="http://rhaidiz.net/something"
+
+# the routers' IPs
+routerips=("192.168.0.1/24" "10.0.0.1/24")
+
+# usernames dictionary
+usernames="['admin', 'admin1', 'test']"
+
+# passwords dictionaris
+passwords="['admin', 'admin1', 'password']"

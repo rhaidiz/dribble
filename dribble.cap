@@ -1,4 +1,6 @@
-set http.proxy.script /home/pi/workspace/dribble/inject-dribble.js
+net.recon off
+events.stream off
+set http.proxy.script inject-dribble.js
 set http.proxy.address 10.0.0.1
 
 http.proxy on

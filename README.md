@@ -10,7 +10,7 @@ For a more in-depth walkthrough see here: https://rhaidiz.net/2018/10/25/dribble
 
 ### Requirements
 
-Dribble relays on the following software to work, so make sure you have them installed:
+Dribble relays on the following software to work, so make sure you have them installed and available in your PATH:
 
 * hostapd
 * dnsmasq
@@ -27,9 +27,25 @@ To run dribble, just download the repo and run it as root.
 
 ## Configuration
 
-At the moment there isn't a proper configuration file for dribble. So customization should be edited direcly from the following files:
+All the configuration you need is located in the config file:
 
-* `dribble.sh`: to change the network configuration such as the local subnet of the fake access point and the ESSID
-* `dribble.cap`: change it to point to the location of `inject-drible.js` and should also be canghed accordingly if you changed the subnet of the fake access point
-* `dnsentries.hosts`: change so that `dribble.poison` points to the IP address of the fake access point
-* `www/js/dlink.js`: to change the end-point where to send the Wi-Fi password
+    # the internet interface
+    internet=eth0
+    
+    # the wifi interface
+    phy=wlan0
+    
+    # The ESSID
+    essid="TEST"
+    
+    # collector
+    collector="http://rhaidiz.net/something"
+    
+    # the routers' IPs
+    routerips=("192.168.0.1/24" "10.0.0.1/24")
+    
+    # usernames dictionary
+    usernames="['admin', 'admin1', 'test']"
+    
+    # passwords dictionaris
+    passwords="['admin', 'admin1', 'password']"
