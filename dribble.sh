@@ -38,7 +38,7 @@ function close {
 	pkill hostapd
 	pkill bettercap
 	pkill nodejs
-	for i in "${routeips[@]}"
+	for i in "${routerips[@]}"
 	do
 		:
 		ip addr del $i dev $phy
@@ -121,7 +121,7 @@ ip addr add 10.0.0.1/24 dev $phy
 
 # here add new IPs to phy so that I can cache the victim
 # ip addr add 192.168.0.1/24 dev $phy
-for i in "${routeips[@]}"
+for i in "${routerips[@]}"
 do
 	:
 	ip addr add $i dev $phy
